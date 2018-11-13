@@ -42,7 +42,6 @@ export default {
 
   },
   created () { // 创建
-
   }
 }
 </script>

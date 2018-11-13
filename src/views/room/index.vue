@@ -39,7 +39,6 @@
 </template>
 
 <script>
-import chat from '@/components/chat'
 let moment = require('moment')
 export default {
   data () {
@@ -52,7 +51,7 @@ export default {
     }
   },
   components: { // 组件
-    chat
+
   },
   computed: { // 计算
 
@@ -60,7 +59,7 @@ export default {
   methods: { // 方法事件
     send () {
       if (this.msginfo && this.msginfo.trim()) {
-        this.socket.emit('msg', {
+        this.$socket.emit('msg', {
           msg: this.msginfo,
           username: this.username
         })
@@ -75,20 +74,18 @@ export default {
     }
   },
   mounted () { // 加载完成
-    this.socket = io('ws://127.0.0.1:8889')
     // 检测用户是否登录
-
     if (this.username) {
       // 用户已登录，客户端发送上线信息给服务器
-      this.socket.emit('online', this.username)
+      this.$socket.emit('online', this.username)
     } else {
       // 用户未登录，提醒用户登录并跳转到登录页面
-      alert('Login first!')
+      alert('请先登录')
       this.$router.push('/')
     }
 
     // 用户上线提示
-    this.socket.on('online', data => {
+    this.$socket.on('online', data => {
       this.msgList.push({
         msgType: 'online',
         username: data,
@@ -97,7 +94,7 @@ export default {
     })
 
     // 接收消息
-    this.socket.on('broadcastMsg', data => {
+    this.$socket.on('broadcastMsg', data => {
       this.msgList.push({
         msgType: 'clientMsg',
         username: data.username,
@@ -107,7 +104,7 @@ export default {
     })
 
     // 用户下线提醒
-    this.socket.on('offline', data => {
+    this.$socket.on('offline', data => {
       this.msgList.push({
         msgType: 'offline',
         username: data,
@@ -116,7 +113,7 @@ export default {
     })
 
     // 监听当前在线人数
-    this.socket.on('clientNum', num => {
+    this.$socket.on('clientNum', num => {
       this.clientNum = num
     })
   },

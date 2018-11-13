@@ -3,7 +3,10 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import VueSocketio from 'vue-socket.io'
+import socketio from 'socket.io-client'
 
+Vue.use(VueSocketio, socketio('ws://127.0.0.1:8899'))
 Vue.config.productionTip = false
 
 router.beforeEach((to, from, next) => {
@@ -11,7 +14,7 @@ router.beforeEach((to, from, next) => {
     next()
   } else {
     if (!localStorage.getItem('chatuser')) { // 判断当前用户是否存在
-      alert('Login first!')
+      alert('请先登录')
       next('/')
     } else {
       next()

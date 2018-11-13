@@ -1,6 +1,6 @@
 var server = require('http').createServer(),
   io = require('socket.io')(server),
-  PORT = 8889,
+  PORT = 8899,
   clientCount = 0;
 
 //监听client的连接,回调函数传递本次连接的socket
